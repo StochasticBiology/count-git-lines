@@ -47,7 +47,13 @@ def aggregate_cloc_data(data_list):
             if lang in ["header", "SUM"]:
                 continue
             if lang not in aggregated:
-                aggregated[lang] = stats
+                # Ensure all keys exist with defaults
+                aggregated[lang] = {
+                    "files": stats.get("files", 0),
+                    "blank": stats.get("blank", 0),
+                    "comment": stats.get("comment", 0),
+                    "code": stats.get("code", 0)
+                }
             else:
                 for key in ["files", "blank", "comment", "code"]:
                     aggregated[lang][key] += stats.get(key, 0)
